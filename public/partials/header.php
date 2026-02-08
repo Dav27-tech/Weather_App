@@ -14,7 +14,7 @@
   <div class="nav-bar">
     <div class="weather">
       <div class="logo">
-        <img src="./../assets/icon/logo_weather.png" alt="weather's logo">
+        <img src="assets/icon/logo_weather.png" alt="weather's logo">
       </div>
       <div class="text">
         <h2>FeelTheWeather</h2>
@@ -33,6 +33,6 @@
     </div>
   </div>
 
-  <script src="../assets/js/main.js"></script>
+  <script src="assets/js/main.js"></script>
 </body>
 </html> 
