@@ -91,24 +91,46 @@ a {
   color: var(--nav-color);
 }
 
+.lang select {
+  padding: 5px 7px;
+  font-size: 14px;
+}
+
+select,
+::picker(select) {
+  appearance: base-select;
+  border-radius: 5px;
+}
+
+::picker(select) {
+  border: 0;
+  margin: 0.4rem 0;
+}
+
+.lang option {
+  font-size: 13px;
+  padding: 5px;
+  border-radius: 3px;
+}
+
 .search-bar {
   position: relative;
   display: flex;
-  justify-content: center;
   align-items: center;
+  gap: 25px;
 }
 .input {
   background-color: transparent;
   color: rgb(251, 251, 251);
   padding: 6px 25px 6px 10px;
-  border: 1.5px solid var(--color);
+  border: 1.5px solid var(--nav-color);
   border-radius: 5px;
   font-size: 16px;
 }
 
 .search-icon {
   position: absolute;
-  left: 208px;
+  left: 284px;
   top: 50%;
   height: 20px;
   width: 20px;
@@ -125,8 +147,8 @@ a {
 #options {
   position: absolute;
   top: 100%;
-  width: 100%;
-  background: #1e1e1e;
+  width: 78%;
+  background: rgb(234, 234, 234);
   list-style: none;
   margin: 5px 0 0;
   padding: 0;
@@ -141,12 +163,12 @@ a {
 #options li {
   padding: 10px;
   cursor: pointer;
-  color: rgb(251, 251, 251);
+  color: rgb(50, 50, 50);
   font-size: 16px;
 }
 
 #options li:hover {
-  background: #333;
+  background: #b2b2b2;
   border-radius: 8px;
 }
 

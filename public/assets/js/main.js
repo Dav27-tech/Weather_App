@@ -43,4 +43,18 @@ function verifyCity() {
     alert("Search empty !");
     return;
   }
+  input.value = "";
+  options.style.display = "none";
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  const langSwitch = document.getElementById("lang_switch");
+
+  const savedLang = localStorage.getItem("lang") || "en";
+  loadLanguage(savedLang);
+  langSwitch.value = savedLang;
+
+  langSwitch.addEventListener("change", () => {
+    loadLanguage(langSwitch.value);
+  });
+});
