@@ -16,12 +16,16 @@ require_once "partials/header.php";
   <div class="today">
     <div class="main">
       <div class="main-1"></div>
-      <div class="main-2"><p>hey</p></div>
+      <div class="main-2"></div>
     </div>
     <div class="auxi">
       <div class="auxi-1"></div>
       <div class="auxi-2"></div>
     </div>
   </div>
+
+  <footer>
+    <?php require_once 'partials/footer.php'?>
+  </footer>
 </body>
 </html>

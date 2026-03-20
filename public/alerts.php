@@ -14,5 +14,8 @@ require_once "partials/header.php";
 </head>
 <body class="main-body">
   
+<footer>
+    <?php require_once 'partials/footer.php'?>
+  </footer>
 </body>
 </html>

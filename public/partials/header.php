@@ -10,6 +10,7 @@
   />
   <base href="/Weather_App/public/">
   <link rel="stylesheet" href="assets/css/style.css"/>
+  <link rel="shortcut icon" href="assets/icon/logo_weather.png" type="image/x-icon">
 </head>
 <body>
   <div class="nav-bar">
