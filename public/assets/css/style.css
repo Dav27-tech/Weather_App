@@ -97,6 +97,7 @@ a {
   padding: 5px 7px;
   font-size: 14px;
   color: rgb(251, 251, 251);
+  background-color: var(--background);
 }
 
 select,
@@ -236,6 +237,34 @@ select,
 }
 
 /* forecast.php */
+.forecast {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.forecast-1 {
+  margin: 50px auto;
+  width: max(1000px, 95%);
+  display: grid;
+  grid-template: 2, 3;
+}
+.cityContainer {
+  margin: 10px 0 10px;
+  border: 1.2px solid var(--thick-color);
+  border-radius: 10px;
+  height: 120px;
+  width: 210px;
+}
+.dayContainer {
+  background-color: var(--container);
+  margin: 10px 0 10px;
+  border: 1.2px solid var(--thick-color);
+  border-radius: 10px;
+  height: 120px;
+  width: 210px;
+}
 
 /* footer.php */
 .page-footer {
