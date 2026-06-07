@@ -12,7 +12,7 @@ require_once "partials/header.php";
 </head>
 <body class="main-body">
   <main>
-    
+    <div id="weatherAlerts" class="cityContainer"></div>
   </main>
   
   <footer>

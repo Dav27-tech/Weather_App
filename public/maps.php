@@ -11,6 +11,12 @@ require_once "partials/header.php";
   <base href="/Weather_App/public/">
 </head>
 <body class="main-body">
+  <main>
+    <div class="forecast">
+      <div id="weatherMap" class="forecast-2"></div>
+      <div id="mapCoordinates" class="cityContainer"></div>
+    </div>
+  </main>
   <footer>
     <?php require_once 'partials/footer.html'?>
   </footer>

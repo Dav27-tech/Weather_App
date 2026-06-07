@@ -1,62 +1,121 @@
-const cities = ["Goma", "Kinshasa", "Bukavu", "Kindu", "Lubumbashi"];
+import { getCurrentLanguage, loadLanguage, t } from "./lang.js";
+import {
+  cities,
+  isAllowedCity,
+  normalizeCity,
+  renderCurrentPage,
+  setSelectedCity,
+} from "./weather.js";
+
 const input = document.getElementById("city");
 const options = document.getElementById("options");
 const btnSearch = document.getElementById("btnSearch");
 
-input.addEventListener("input", () => {
-  const value = input.value.toLowerCase();
-  options.innerHTML = "";
-
-  if (!value) {
-    options.style.display = "none";
-    return;
-  }
-
-  options.style.display = "block";
-
-  const filtered = cities.filter((city) =>
-    city.toLowerCase().startsWith(value),
-  );
-  if (filtered.length == 0) {
-    const li = document.createElement("li");
-    li.textContent = "No information!";
-    options.appendChild(li);
-  }
-
-  filtered.forEach((city) => {
-    const li = document.createElement("li");
-    li.textContent = city;
-    li.onclick = () => {
-      input.value = city;
-      options.style.display = "none";
-    };
-    options.appendChild(li);
-  });
-});
-
-btnSearch.addEventListener("click", verifyCity);
-
-// verify city
-function verifyCity() {
-  const value = input.value;
-
-  if (!value) {
-    alert("Search empty !");
-    return;
-  }
-  input.value = "";
+function hideOptions() {
   options.style.display = "none";
 }
 
-// Change the language
-document.addEventListener("DOMContentLoaded", () => {
-  const langSwitch = document.getElementById("lang_switch");
+function showOptions() {
+  options.style.display = "block";
+}
 
-  const savedLang = localStorage.getItem("lang") || "en";
-  loadLanguage(savedLang);
+function renderSuggestion(label, onClick) {
+  const li = document.createElement("li");
+  li.textContent = label;
+  li.addEventListener("click", onClick);
+  options.appendChild(li);
+}
+
+function renderSuggestions() {
+  const value = input.value.trim().toLowerCase();
+  options.innerHTML = "";
+
+  if (!value) {
+    hideOptions();
+    return;
+  }
+
+  const filtered = cities.filter((city) => city.toLowerCase().startsWith(value));
+  showOptions();
+
+  if (filtered.length === 0) {
+    renderSuggestion(t("no_information"), () => {});
+    return;
+  }
+
+  filtered.forEach((city) => {
+    renderSuggestion(city, () => selectCity(city));
+  });
+}
+
+async function selectCity(city) {
+  try {
+    const selectedCity = setSelectedCity(city);
+    input.value = selectedCity;
+    hideOptions();
+    await renderCurrentPage(selectedCity);
+  } catch (error) {
+    options.innerHTML = "";
+    showOptions();
+    renderSuggestion(t(error.message || "invalid_city"), () => {});
+  }
+}
+
+async function verifyCity() {
+  const value = input.value.trim();
+
+  if (!value) {
+    alert(t("search_empty"));
+    return;
+  }
+
+  if (!isAllowedCity(value)) {
+    options.innerHTML = "";
+    showOptions();
+    renderSuggestion(t("invalid_city"), () => {});
+    return;
+  }
+
+  await selectCity(normalizeCity(value));
+}
+
+async function init() {
+  const langSwitch = document.getElementById("lang_switch");
+  const savedLang = getCurrentLanguage();
+
+  await loadLanguage(savedLang);
   langSwitch.value = savedLang;
 
-  langSwitch.addEventListener("change", () => {
-    loadLanguage(langSwitch.value);
+  input.addEventListener("input", renderSuggestions);
+  input.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      verifyCity();
+    }
   });
-});
+
+  btnSearch.addEventListener("click", verifyCity);
+
+  document.addEventListener("click", (event) => {
+    if (!event.target.closest(".search_input")) {
+      hideOptions();
+    }
+  });
+
+  langSwitch.addEventListener("change", async () => {
+    await loadLanguage(langSwitch.value);
+  });
+
+  document.addEventListener("language:changed", () => {
+    renderCurrentPage();
+  });
+
+  document.addEventListener("city:changed", (event) => {
+    input.value = event.detail.city;
+  });
+
+  input.value = localStorage.getItem("selectedCity") || cities[0];
+  await renderCurrentPage(input.value);
+}
+
+document.addEventListener("DOMContentLoaded", init);
