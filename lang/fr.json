@@ -1,6 +1,23 @@
 {
   "today": "Aujourd'hui",
   "forecast": "Prévisions",
+  "maps": "Cartes",
   "alerts": "Alertes",
-  "search_placeholder": "Rechercher une ville..."
+  "search_placeholder": "Rechercher une ville...",
+  "loading": "Chargement...",
+  "no_information": "Aucune information !",
+  "search_empty": "Recherche vide !",
+  "invalid_city": "Veuillez choisir une ville dans la liste.",
+  "network_error": "Impossible de charger les donnees meteo.",
+  "current_weather": "Meteo actuelle",
+  "hourly_forecast": "Prochaines heures",
+  "weather_details": "Details",
+  "location": "Position",
+  "humidity": "Humidite",
+  "wind": "Vent",
+  "pressure": "Pression",
+  "coordinates": "Coordonnees",
+  "temperature_trend": "Tendance temperature",
+  "rain_probability": "Probabilite de pluie",
+  "no_alerts": "Aucune alerte meteo active"
 }

@@ -1,6 +1,23 @@
 {
   "today": "Today",
   "forecast": "Forecast",
+  "maps": "Maps",
   "alerts": "Alerts",
-  "search_placeholder": "Search city..."
+  "search_placeholder": "Search city...",
+  "loading": "Loading...",
+  "no_information": "No information!",
+  "search_empty": "Search empty!",
+  "invalid_city": "Please select a city from the list.",
+  "network_error": "Unable to load weather data.",
+  "current_weather": "Current weather",
+  "hourly_forecast": "Next hours",
+  "weather_details": "Details",
+  "location": "Location",
+  "humidity": "Humidity",
+  "wind": "Wind",
+  "pressure": "Pressure",
+  "coordinates": "Coordinates",
+  "temperature_trend": "Temperature trend",
+  "rain_probability": "Rain probability",
+  "no_alerts": "No active weather alerts"
 }

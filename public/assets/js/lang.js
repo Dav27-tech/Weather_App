@@ -1,23 +1,45 @@
-async function loadLanguage(lang) {
-  const res = await fetch(`../lang/${lang}.json`);
+let currentTranslations = {};
+
+export async function loadLanguage(lang) {
+  const selectedLang = ["en", "fr"].includes(lang) ? lang : "en";
+  const res = await fetch(`../lang/${selectedLang}.json`);
+
   if (!res.ok) {
-    console.error(`Failed to load language file: ${lang}.json`);
-    return;
+    console.error(`Failed to load language file: ${selectedLang}.json`);
+    return currentTranslations;
   }
-  const translations = await res.json();
+
+  currentTranslations = await res.json();
 
   document
-    .querySelectorAll("[data-i18n] , [data-i18n-placeholder]")
+    .querySelectorAll("[data-i18n], [data-i18n-placeholder]")
     .forEach((el) => {
-      const textkey = el.dataset.i18n;
-      const placeholderkey = el.dataset.i18nPlaceholder;
-      if (translations[textkey]) {
-        el.textContent = translations[textkey];
+      const textKey = el.dataset.i18n;
+      const placeholderKey = el.dataset.i18nPlaceholder;
+
+      if (textKey && currentTranslations[textKey]) {
+        el.textContent = currentTranslations[textKey];
       }
-      if (translations[placeholderkey]) {
-        el.placeholder = translations[placeholderkey];
+
+      if (placeholderKey && currentTranslations[placeholderKey]) {
+        el.placeholder = currentTranslations[placeholderKey];
       }
     });
 
-  localStorage.setItem("lang", lang);
+  localStorage.setItem("lang", selectedLang);
+  document.dispatchEvent(
+    new CustomEvent("language:changed", {
+      detail: { lang: selectedLang, translations: currentTranslations },
+    }),
+  );
+
+  return currentTranslations;
+}
+
+export function getCurrentLanguage() {
+  return localStorage.getItem("lang") || "en";
+}
+
+export function t(key) {
+  return currentTranslations[key] || key;
 }

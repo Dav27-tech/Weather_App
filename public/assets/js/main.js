@@ -1,4 +1,4 @@
-const cities = ["Goma", "Kinshasa", "Bukavu", "Kigali", "Kindu", "Lubumbashi"];
+const cities = ["Goma", "Kinshasa", "Bukavu", "Kindu", "Lubumbashi"];
 const input = document.getElementById("city");
 const options = document.getElementById("options");
 const btnSearch = document.getElementById("btnSearch");
