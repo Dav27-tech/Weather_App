@@ -111,13 +111,13 @@ function formatDate(value, options) {
 
 function showLoading(target) {
   if (target) {
-    target.innerHTML = `<p>${escapeHtml(t("loading"))}</p>`;
+    target.innerHTML = `<p class="card-muted">${escapeHtml(t("loading"))}</p>`;
   }
 }
 
 function showError(target, error) {
   if (target) {
-    target.innerHTML = `<p>${escapeHtml(t(error.message || "network_error"))}</p>`;
+    target.innerHTML = `<p class="card-muted">${escapeHtml(t(error.message || "network_error"))}</p>`;
   }
 }
 
@@ -152,45 +152,61 @@ export async function renderTodayPage(city = getSelectedCity()) {
     ]);
 
     mainCard.innerHTML = `
-      <p>${escapeHtml(t("current_weather"))}</p>
-      <h1>${escapeHtml(weather.city)}, ${escapeHtml(weather.country)}</h1>
-      <h2>${Math.round(weather.temperature)}&deg;C</h2>
-      <p>${iconHtml(weather.condition)} ${escapeHtml(weather.description || weather.condition)}</p>
-      <p>${escapeHtml(formatDate(new Date(), {
+      <div class="weather-current">
+        <div>
+          <p class="card-label">${escapeHtml(t("current_weather"))}</p>
+          <h1>${escapeHtml(weather.city)}, ${escapeHtml(weather.country)}</h1>
+          <p class="card-muted">${escapeHtml(formatDate(new Date(), {
+            weekday: "long",
+            hour: "2-digit",
+            minute: "2-digit",
+          }))}</p>
+        </div>
+        <span class="weather-main-icon">${iconHtml(weather.condition)}</span>
+      </div>
+      <p class="weather-temp">${Math.round(weather.temperature)}&deg;C</p>
+      <p class="weather-condition">${escapeHtml(weather.description || weather.condition)}</p>
+      <p class="card-muted">${escapeHtml(formatDate(new Date(), {
         weekday: "long",
-        hour: "2-digit",
-        minute: "2-digit",
+        month: "long",
+        day: "numeric",
       }))}</p>
     `;
 
     hourlyCard.innerHTML = `
       <h3>${escapeHtml(t("hourly_forecast"))}</h3>
-      ${forecast.hourly
-        .slice(0, 6)
-        .map(
-          (item) => `
-            <p>
-              ${escapeHtml(formatDate(item.time, { hour: "2-digit" }))}
-              ${iconHtml(item.condition)}
-              ${Math.round(item.temperature)}&deg;C
-            </p>
-          `,
-        )
-        .join("")}
+      <div class="hourly-list">
+        ${forecast.hourly
+          .slice(0, 6)
+          .map(
+            (item) => `
+              <div class="hourly-item">
+                <span>${escapeHtml(formatDate(item.time, { hour: "2-digit" }))}</span>
+                ${iconHtml(item.condition)}
+                <strong>${Math.round(item.temperature)}&deg;</strong>
+              </div>
+            `,
+          )
+          .join("")}
+      </div>
     `;
 
     detailsCard.innerHTML = `
       <h3>${escapeHtml(t("weather_details"))}</h3>
-      <p>${escapeHtml(t("humidity"))}: ${weather.humidity}%</p>
-      <p>${escapeHtml(t("wind"))}: ${weather.wind} m/s</p>
-      <p>${escapeHtml(t("pressure"))}: ${weather.pressure} hPa</p>
+      <div class="detail-grid">
+        <div class="detail-item"><span>${escapeHtml(t("humidity"))}</span><strong>${weather.humidity}%</strong></div>
+        <div class="detail-item"><span>${escapeHtml(t("wind"))}</span><strong>${weather.wind} m/s</strong></div>
+        <div class="detail-item"><span>${escapeHtml(t("pressure"))}</span><strong>${weather.pressure} hPa</strong></div>
+      </div>
     `;
 
     locationCard.innerHTML = `
       <h3>${escapeHtml(t("location"))}</h3>
-      <p>${escapeHtml(t("coordinates"))}</p>
-      <p>Lat: ${Number(weather.lat).toFixed(4)}</p>
-      <p>Lon: ${Number(weather.lon).toFixed(4)}</p>
+      <p class="card-muted">${escapeHtml(t("coordinates"))}</p>
+      <div class="detail-grid">
+        <div class="detail-item"><span>Lat</span><strong>${Number(weather.lat).toFixed(4)}</strong></div>
+        <div class="detail-item"><span>Lon</span><strong>${Number(weather.lon).toFixed(4)}</strong></div>
+      </div>
     `;
   } catch (error) {
     [mainCard, hourlyCard, detailsCard, locationCard].forEach((target) =>
@@ -218,9 +234,13 @@ export async function renderForecastPage(city = getSelectedCity()) {
     ]);
 
     cityCard.innerHTML = `
-      <h2>${escapeHtml(weather.city)}, ${escapeHtml(weather.country)}</h2>
-      <p>${iconHtml(weather.condition)} ${Math.round(weather.temperature)}&deg;C</p>
-      <p>${escapeHtml(weather.description || weather.condition)}</p>
+      <p class="card-label">${escapeHtml(t("current_weather"))}</p>
+      <div class="forecast-card-top">
+        <h2>${escapeHtml(weather.city)}, ${escapeHtml(weather.country)}</h2>
+        ${iconHtml(weather.condition)}
+      </div>
+      <p class="forecast-temp">${Math.round(weather.temperature)}&deg;C</p>
+      <p class="card-muted">${escapeHtml(weather.description || weather.condition)}</p>
     `;
 
     forecast.daily.slice(0, 7).forEach((item, index) => {
@@ -229,10 +249,13 @@ export async function renderForecastPage(city = getSelectedCity()) {
       }
 
       dayCards[index].innerHTML = `
-        <h3>${escapeHtml(formatDate(item.date, { weekday: "short" }))}</h3>
-        <p>${iconHtml(item.condition)}</p>
-        <p>${Math.round(item.tempMax)}&deg; / ${Math.round(item.tempMin)}&deg;C</p>
-        <p>${escapeHtml(item.description || item.condition)}</p>
+        <div class="forecast-card-top">
+          <h3>${escapeHtml(formatDate(item.date, { weekday: "short" }))}</h3>
+          ${iconHtml(item.condition)}
+        </div>
+        <p class="forecast-temp">${Math.round(item.tempMax)}&deg;C</p>
+        <p class="card-muted">${escapeHtml(item.description || item.condition)}</p>
+        <p class="forecast-range">${Math.round(item.tempMin)}&deg; / ${item.rainProbability || 0}%</p>
       `;
     });
 
@@ -275,8 +298,14 @@ async function renderCharts(target, daily) {
   }
 
   target.innerHTML = `
-    <canvas id="temperatureChart" aria-label="${escapeHtml(t("temperature_trend"))}"></canvas>
-    <canvas id="rainChart" aria-label="${escapeHtml(t("rain_probability"))}"></canvas>
+    <div class="chart-card">
+      <h3>${escapeHtml(t("temperature_trend"))}</h3>
+      <canvas id="temperatureChart" aria-label="${escapeHtml(t("temperature_trend"))}"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3>${escapeHtml(t("rain_probability"))}</h3>
+      <canvas id="rainChart" aria-label="${escapeHtml(t("rain_probability"))}"></canvas>
+    </div>
   `;
 
   try {
@@ -412,8 +441,9 @@ export async function renderAlertsPage(city = getSelectedCity()) {
 
     if (!data.alerts || data.alerts.length === 0) {
       target.innerHTML = `
+        <p class="card-label">${escapeHtml(t("alerts"))}</p>
         <h2>${escapeHtml(data.city || city)}</h2>
-        <p>${escapeHtml(t("no_alerts"))}</p>
+        <p class="card-muted">${escapeHtml(t("no_alerts"))}</p>
       `;
       return;
     }
